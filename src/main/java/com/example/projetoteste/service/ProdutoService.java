@@ -14,4 +14,6 @@ public interface ProdutoService {
     void update(ProdutoDTO produto, Integer id);
 
     void delete(Integer id);
+
+    Produto encontraPorId(Integer id);
 }

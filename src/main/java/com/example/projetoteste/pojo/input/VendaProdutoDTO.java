@@ -1,18 +1,16 @@
 package com.example.projetoteste.pojo.input;
 
-import io.swagger.v3.oas.annotations.media.Schema;
-
 public class VendaProdutoDTO {
 
-    private Integer codigoProduto;
+    private Integer id;
     private Integer quantidade;
 
-    public Integer getCodigoProduto() {
-        return codigoProduto;
+    public Integer getId() {
+        return id;
     }
 
-    public void setCodigoProduto(Integer codigoProduto) {
-        this.codigoProduto = codigoProduto;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public Integer getQuantidade() {

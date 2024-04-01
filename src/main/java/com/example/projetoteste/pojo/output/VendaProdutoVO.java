@@ -1,18 +1,18 @@
 package com.example.projetoteste.pojo.output;
 
 public class VendaProdutoVO {
-    private Integer produto_id;
+    private Integer id;
     private Integer quantidade;
     private Double valor_unitario;
     private Double valor_total;
     private String nome;
 
-    public Integer getProduto_id() {
-        return produto_id;
+    public Integer getId() {
+        return id;
     }
 
-    public void setProduto_id(Integer produto_id) {
-        this.produto_id = produto_id;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public Integer getQuantidade() {

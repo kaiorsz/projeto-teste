@@ -61,4 +61,9 @@ public @Service class ProdutoServiceImpl implements ProdutoService {
     public void delete(Integer id) {
         produtoDao.deletaPorId(id);
     }
+
+    @Override
+    public Produto encontraPorId(Integer id) {
+        return produtoDao.encontraPorId(id);
+    }
 }

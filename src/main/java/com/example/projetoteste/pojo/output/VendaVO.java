@@ -6,14 +6,14 @@ public class VendaVO {
     private Integer id;
     private String cliente;
     private Double valor_total;
-    private List<VendaProdutoVO> vendaProdutos;
+    private List<VendaProdutoVO> venda_produtos;
 
-    public List<VendaProdutoVO> getVendaProdutos() {
-        return vendaProdutos;
+    public List<VendaProdutoVO> getVenda_produtos() {
+        return venda_produtos;
     }
 
-    public void setVendaProdutos(List<VendaProdutoVO> vendaProdutos) {
-        this.vendaProdutos = vendaProdutos;
+    public void setVenda_produtos(List<VendaProdutoVO> venda_produtos) {
+        this.venda_produtos = venda_produtos;
     }
 
     public Integer getId() {

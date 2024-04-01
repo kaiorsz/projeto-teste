@@ -7,6 +7,7 @@ import com.example.projetoteste.entity.Produto;
 import com.example.projetoteste.entity.Venda;
 import com.example.projetoteste.entity.VendaProduto;
 import com.example.projetoteste.jdbc.ConexaoJDBC;
+import com.example.projetoteste.pojo.input.VendaDTO;
 import com.example.projetoteste.pojo.input.VendaProdutoDTO;
 import com.example.projetoteste.pojo.output.VendaProdutoVO;
 import com.example.projetoteste.pojo.output.VendaVO;
@@ -42,7 +43,7 @@ public @Service class VendaServiceImpl implements VendaService {
         List<Produto> produtosVendidos = new ArrayList<>();
         List<VendaProduto> vendasProdutos = new ArrayList<>();
         for (VendaProdutoDTO vendaProdutoDTO : vendaProdutoDTOS) {
-            Produto produto = produtoDao.encontraPorId(vendaProdutoDTO.getCodigoProduto());
+            Produto produto = produtoDao.encontraPorId(vendaProdutoDTO.getId());
             if (produto == null) {
                 throw new RuntimeException("Produto " + produto.getId() + " não encontrado. Tente novamente.");
             }
@@ -86,7 +87,8 @@ public @Service class VendaServiceImpl implements VendaService {
 
     @Transactional
     @Override
-    public VendaVO update(List<VendaProdutoDTO> vendaProdutoDTOS, Integer id) {
+    public VendaVO update(VendaDTO vendaDTO, Integer id) {
+        List<VendaProdutoDTO> vendaProdutoDTOS = vendaDTO.getVenda_produtos();
         if(vendaProdutoDTOS.isEmpty()) {
             throw new RuntimeException("Venda sem produtos. Tente novamente.");
         }
@@ -109,12 +111,13 @@ public @Service class VendaServiceImpl implements VendaService {
         }
 
         venda.setValor_total(0.0);
+        venda.setCliente(vendaDTO.getCliente());
 
         List<Produto> produtosVendidos = new ArrayList<>();
         List<VendaProduto> vendasProdutos = new ArrayList<>();
 
         for (VendaProdutoDTO vendaProdutoDTO : vendaProdutoDTOS) {
-            Produto produto = produtoDao.encontraPorId(vendaProdutoDTO.getCodigoProduto());
+            Produto produto = produtoDao.encontraPorId(vendaProdutoDTO.getId());
             if (produto == null) {
                 throw new RuntimeException("Produto " + produto.getId() + " não encontrado. Tente novamente.");
             }
@@ -168,23 +171,32 @@ public @Service class VendaServiceImpl implements VendaService {
         vendaDao.delete(venda);
     }
 
+    @Override
+    public VendaVO encontraPorId(Integer id) {
+        Venda venda = vendaDao.encontrarPorId(id);
+        if (venda == null) {
+            throw new RuntimeException("Venda " + id + " não encontrada. Tente novamente.");
+        }
+        return entityToVO(venda);
+    }
+
     private VendaVO entityToVO(Venda venda) {
         VendaVO vendaVO = new VendaVO();
         vendaVO.setId(venda.getId());
         vendaVO.setCliente(venda.getCliente());
         vendaVO.setValor_total(venda.getValor_total());
-        vendaVO.setVendaProdutos(new ArrayList<>());
+        vendaVO.setVenda_produtos(new ArrayList<>());
         List<VendaProduto> vendaProdutos = vendaProdutoDao.encontraPorVenda(venda);
         for (VendaProduto vendaProduto : vendaProdutos) {
             VendaProdutoVO vendaProdutoVO = new VendaProdutoVO();
-            vendaProdutoVO.setProduto_id(vendaProduto.getProduto());
+            vendaProdutoVO.setId(vendaProduto.getProduto());
             vendaProdutoVO.setQuantidade(vendaProduto.getQuantidade());
 
             Produto produto = produtoDao.encontraPorId(vendaProduto.getProduto());
             vendaProdutoVO.setValor_unitario(produto.getValor_unitario());
             vendaProdutoVO.setValor_total(produto.getValor_unitario() * vendaProduto.getQuantidade());
             vendaProdutoVO.setNome(produto.getNome());
-            vendaVO.getVendaProdutos().add(vendaProdutoVO);
+            vendaVO.getVenda_produtos().add(vendaProdutoVO);
         }
         return vendaVO;
     }
