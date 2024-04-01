@@ -40,6 +40,10 @@ public @Service class VendaServiceImpl implements VendaService {
             throw new RuntimeException("Venda sem produtos. Tente novamente.");
         }
 
+        if(cliente.isEmpty()) {
+            throw new RuntimeException("Cliente não pode ser vazio. Tente novamente.");
+        }
+
         List<Produto> produtosVendidos = new ArrayList<>();
         List<VendaProduto> vendasProdutos = new ArrayList<>();
         for (VendaProdutoDTO vendaProdutoDTO : vendaProdutoDTOS) {

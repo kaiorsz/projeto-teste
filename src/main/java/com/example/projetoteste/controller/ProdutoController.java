@@ -69,6 +69,9 @@ public class ProdutoController {
             produtoService.delete(id);
             return ResponseEntity.ok().build();
         } catch (Exception e) {
+            if(e.getMessage().contains("venda_produto_produto_fkey")) {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Produto não pode ser deletado pois está associado a uma venda.");
+            }
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }

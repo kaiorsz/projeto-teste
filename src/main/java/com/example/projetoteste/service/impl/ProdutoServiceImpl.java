@@ -25,6 +25,9 @@ public @Service class ProdutoServiceImpl implements ProdutoService {
         if(produtoDTO.getValor_unitario() <= 0) {
             throw new RuntimeException("Valor unitário não pode ser vazio.");
         }
+        if(produtoDTO.getNome() == null || produtoDTO.getNome().isEmpty()) {
+            throw new RuntimeException("Nome não pode ser vazio.");
+        }
         Produto produto = dtoToEntiy(produtoDTO);
         produtoDao.criar(produto);
     }
