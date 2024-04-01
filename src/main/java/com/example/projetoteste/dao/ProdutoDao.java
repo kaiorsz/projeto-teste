@@ -4,11 +4,13 @@ import com.example.projetoteste.entity.Produto;
 import com.example.projetoteste.jdbc.ConexaoJDBC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
+@Component
 public class ProdutoDao {
 
     @Autowired
@@ -30,7 +32,7 @@ public class ProdutoDao {
     public void criar(Produto produto) {
         try {
             StringBuilder sql = new StringBuilder("INSERT INTO produto (nome, descricao, quantidade_disponivel, valor_unitario) VALUES (?, ?, ?, ?)");
-            jdbcTemplate.update(sql.toString(), produto.getNome(), produto.getDescricao(), produto.getQuantidade_disponivel(), produto.getValor_unitario());
+            conexaoJDBC.getJdbcTemplate().update(sql.toString(), produto.getNome(), produto.getDescricao(), produto.getQuantidade_disponivel(), produto.getValor_unitario());
         } catch (Exception e) {
             throw e;
         }
@@ -60,7 +62,7 @@ public class ProdutoDao {
     public Produto encontraPorId(Integer id) {
         try {
             StringBuilder sql = new StringBuilder("SELECT * FROM produto WHERE id = ?");
-            List<Produto> produtos = jdbcTemplate.query(sql.toString(), new ProdutoRowMapper(), id);
+            List<Produto> produtos = conexaoJDBC.getJdbcTemplate().query(sql.toString(), new ProdutoRowMapper(), id);
 
             return produtos.size() > 0 ? produtos.get(0) : null;
         } catch (Exception e) {
@@ -71,7 +73,7 @@ public class ProdutoDao {
     public void deletaPorId(Integer id) {
         try {
             StringBuilder sql = new StringBuilder("DELETE FROM produto WHERE id = ?");
-            jdbcTemplate.update(sql.toString(), id);
+            conexaoJDBC.getJdbcTemplate().update(sql.toString(), id);
         } catch (Exception e) {
             throw e;
         }
@@ -80,7 +82,7 @@ public class ProdutoDao {
     public void atualizarPorId(Produto produto, Integer id) {
         try {
             StringBuilder sqlBuilder = new StringBuilder("UPDATE produto SET nome = ?, descricao = ?, quantidade_disponivel = ?, valor_unitario = ? WHERE id = ?");
-            jdbcTemplate.update(sqlBuilder.toString(), produto.getNome(), produto.getDescricao(), produto.getQuantidade_disponivel(), produto.getValor_unitario(), id);
+            conexaoJDBC.getJdbcTemplate().update(sqlBuilder.toString(), produto.getNome(), produto.getDescricao(), produto.getQuantidade_disponivel(), produto.getValor_unitario(), id);
         } catch (Exception e) {
             throw e;
         }

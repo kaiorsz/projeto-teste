@@ -2,6 +2,8 @@ package com.example.projetoteste.dao;
 
 import com.example.projetoteste.entity.Venda;
 import com.example.projetoteste.entity.VendaProduto;
+import com.example.projetoteste.jdbc.ConexaoJDBC;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
@@ -13,16 +15,13 @@ import java.util.List;
 @Component
 public class VendaProdutoDao {
 
-    JdbcTemplate jdbcTemplate;
-
-    public VendaProdutoDao(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
-    }
+    @Autowired
+    private ConexaoJDBC conexaoJDBC;
 
     public void delete(Integer id) {
         try {
             StringBuilder sql = new StringBuilder("DELETE FROM venda_produto WHERE id = ?");
-            jdbcTemplate.update(sql.toString(), id);
+            conexaoJDBC.getJdbcTemplate().update(sql.toString(), id);
         } catch (Exception e) {
             throw e;
         }
@@ -31,7 +30,7 @@ public class VendaProdutoDao {
     public void criar(VendaProduto vendaProdutoEntity) {
         try {
             StringBuilder sql = new StringBuilder("INSERT INTO venda_produto (produto, quantidade, venda) VALUES (?, ?, ?)");
-            jdbcTemplate.update(sql.toString(), vendaProdutoEntity.getProduto(), vendaProdutoEntity.getQuantidade(), vendaProdutoEntity.getVenda());
+            conexaoJDBC.getJdbcTemplate().update(sql.toString(), vendaProdutoEntity.getProduto(), vendaProdutoEntity.getQuantidade(), vendaProdutoEntity.getVenda());
         } catch (Exception e) {
             throw e;
         }
@@ -52,7 +51,7 @@ public class VendaProdutoDao {
     public List<VendaProduto> encontraPorVenda(Venda venda) {
         try {
             StringBuilder sql = new StringBuilder("SELECT * FROM venda_produto WHERE venda = ?");
-            List<VendaProduto> vendaProdutos = jdbcTemplate.query(sql.toString(), new VendaProdutoRowMapper(), venda.getId());
+            List<VendaProduto> vendaProdutos = conexaoJDBC.getJdbcTemplate().query(sql.toString(), new VendaProdutoRowMapper(), venda.getId());
 
             return vendaProdutos;
         } catch (Exception e) {

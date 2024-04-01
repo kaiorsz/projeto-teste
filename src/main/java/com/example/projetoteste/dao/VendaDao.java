@@ -1,6 +1,8 @@
 package com.example.projetoteste.dao;
 
 import com.example.projetoteste.entity.Venda;
+import com.example.projetoteste.jdbc.ConexaoJDBC;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -18,16 +20,13 @@ import java.util.List;
 @Component
 public class VendaDao {
 
-    JdbcTemplate jdbcTemplate;
-
-    public VendaDao(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
-    }
+    @Autowired
+    private ConexaoJDBC conexaoJDBC;
 
     public void delete(Venda venda) {
         try {
             StringBuilder sql = new StringBuilder("DELETE FROM venda WHERE id = ?");
-            jdbcTemplate.update(sql.toString(), venda.getId());
+            conexaoJDBC.getJdbcTemplate().update(sql.toString(), venda.getId());
         } catch (Exception e) {
             throw e;
         }
@@ -42,7 +41,7 @@ public class VendaDao {
             int offset = page * size;
             sql.append(" LIMIT ").append(size).append(" OFFSET ").append(offset);
 
-            return jdbcTemplate.query(sql.toString(), new VendaRowMapper());
+            return conexaoJDBC.getJdbcTemplate().query(sql.toString(), new VendaRowMapper());
         } catch (Exception e) {
             throw e;
         }
@@ -51,7 +50,7 @@ public class VendaDao {
     public Venda atualizar(Venda venda) {
         try {
             StringBuilder sql = new StringBuilder("UPDATE venda SET cliente = ?, valor_total = ? WHERE id = ?");
-            jdbcTemplate.update(sql.toString(), venda.getCliente(), venda.getValor_total(), venda.getId());
+            conexaoJDBC.getJdbcTemplate().update(sql.toString(), venda.getCliente(), venda.getValor_total(), venda.getId());
 
             return venda;
         } catch (Exception e) {
@@ -75,7 +74,7 @@ public class VendaDao {
             StringBuilder sql = new StringBuilder("INSERT INTO venda (cliente, valor_total) VALUES (?, ?)");
 
             KeyHolder keyHolder = new GeneratedKeyHolder();
-            jdbcTemplate.update(connection -> {
+            conexaoJDBC.getJdbcTemplate().update(connection -> {
                 PreparedStatement ps = connection.prepareStatement(sql.toString(), Statement.RETURN_GENERATED_KEYS);
                 ps.setString(1, venda.getCliente());
                 ps.setBigDecimal(2, new BigDecimal(venda.getValor_total()));
@@ -98,7 +97,7 @@ public class VendaDao {
     public Venda encontrarPorId(Integer id) {
         try {
             StringBuilder sql = new StringBuilder("SELECT * FROM venda WHERE id = ?");
-            List<Venda> vendas = jdbcTemplate.query(sql.toString(), new VendaRowMapper(), id);
+            List<Venda> vendas = conexaoJDBC.getJdbcTemplate().query(sql.toString(), new VendaRowMapper(), id);
 
             return vendas.size() > 0 ? vendas.get(0) : null;
         } catch (Exception e) {
