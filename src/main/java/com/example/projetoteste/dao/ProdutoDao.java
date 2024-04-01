@@ -1,7 +1,6 @@
 package com.example.projetoteste.dao;
 
 import com.example.projetoteste.entity.Produto;
-import com.example.projetoteste.pojo.input.ProdutoDTO;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
@@ -39,12 +38,12 @@ public class ProdutoDao {
         }
     }
 
-    public List<Produto> encontrarProdutos(Integer page, Integer size, String nome, String sortBy, String sortOrder) {
+    public List<Produto> encontrarProdutos(Integer page, Integer size, String sortBy, String sortOrder, Boolean disponivel) {
         try {
             StringBuilder sql = new StringBuilder("SELECT * FROM produto");
 
-            if (nome != null && !nome.isEmpty()) {
-                sql.append(" WHERE upper(nome) LIKE '%").append(nome.toUpperCase()).append("%'");
+            if(disponivel) {
+                sql.append(" WHERE quantidade_disponivel > 0 ");
             }
 
             // Adicionando ordenação

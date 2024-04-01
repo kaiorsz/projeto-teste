@@ -39,8 +39,8 @@ public @Service class ProdutoServiceImpl implements ProdutoService {
     }
 
     @Override
-    public List<Produto> findAll(Integer page, Integer size, String nome, String sortBy, String sortOrder) {
-        List<Produto> produtos = produtoDao.encontrarProdutos(page, size, nome, sortBy, sortOrder);
+    public List<Produto> findAll(Integer page, Integer size, String sortBy, String sortOrder, Boolean disponivel) {
+        List<Produto> produtos = produtoDao.encontrarProdutos(page, size, sortBy, sortOrder, disponivel);
 
         return produtos;
     }
