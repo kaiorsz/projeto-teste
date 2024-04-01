@@ -12,6 +12,7 @@ import com.example.projetoteste.pojo.input.VendaProdutoDTO;
 import com.example.projetoteste.pojo.output.VendaProdutoVO;
 import com.example.projetoteste.pojo.output.VendaVO;
 import com.example.projetoteste.service.VendaService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,15 +21,14 @@ import java.util.List;
 
 public @Service class VendaServiceImpl implements VendaService {
 
+    @Autowired
     private VendaDao vendaDao;
-    private ProdutoDao produtoDao;
-    private VendaProdutoDao vendaProdutoDao;
 
-    public VendaServiceImpl() {
-        this.vendaDao = new VendaDao(ConexaoJDBC.getJdbcTemplate());
-        this.produtoDao = new ProdutoDao(ConexaoJDBC.getJdbcTemplate());
-        this.vendaProdutoDao = new VendaProdutoDao(ConexaoJDBC.getJdbcTemplate());
-    }
+    @Autowired
+    private ProdutoDao produtoDao;
+
+    @Autowired
+    private VendaProdutoDao vendaProdutoDao;
 
     @Override
     public VendaVO realizaVenda(List<VendaProdutoDTO> vendaProdutoDTOS, String cliente) throws Exception {

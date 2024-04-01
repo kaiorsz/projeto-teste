@@ -5,17 +5,15 @@ import com.example.projetoteste.entity.Produto;
 import com.example.projetoteste.jdbc.ConexaoJDBC;
 import com.example.projetoteste.pojo.input.ProdutoDTO;
 import com.example.projetoteste.service.ProdutoService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 public @Service class ProdutoServiceImpl implements ProdutoService {
 
+    @Autowired
     private ProdutoDao produtoDao;
-
-    public ProdutoServiceImpl() {
-        this.produtoDao = new ProdutoDao(ConexaoJDBC.getJdbcTemplate());
-    }
 
     @Override
     public void criaProduto(ProdutoDTO produtoDTO) {

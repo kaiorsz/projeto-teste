@@ -33,7 +33,7 @@ CREATE TABLE venda_produto (
 
 2. **Configuração do Projeto:**
     - Clone este repositório em seu ambiente.
-    - Abra o arquivo `config.py` e insira as credenciais do seu banco de dados.
+    - Abra o arquivo `application.properties` e insira as credenciais do seu banco de dados.
 
 3. **Execução do Projeto:**
     - Certifique-se de que todas as dependências do projeto estão instaladas.

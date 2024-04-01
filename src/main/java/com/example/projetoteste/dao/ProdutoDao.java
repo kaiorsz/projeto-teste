@@ -1,7 +1,8 @@
 package com.example.projetoteste.dao;
 
 import com.example.projetoteste.entity.Produto;
-import org.springframework.jdbc.core.JdbcTemplate;
+import com.example.projetoteste.jdbc.ConexaoJDBC;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
@@ -10,11 +11,8 @@ import java.util.List;
 
 public class ProdutoDao {
 
-    JdbcTemplate jdbcTemplate;
-
-    public ProdutoDao(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
-    }
+    @Autowired
+    private ConexaoJDBC conexaoJDBC;
 
     private class ProdutoRowMapper implements RowMapper<Produto> {
         @Override
@@ -53,7 +51,7 @@ public class ProdutoDao {
             int offset = page * size;
             sql.append(" LIMIT ").append(size).append(" OFFSET ").append(offset);
 
-            return jdbcTemplate.query(sql.toString(), new ProdutoRowMapper());
+            return conexaoJDBC.getJdbcTemplate().query(sql.toString(), new ProdutoRowMapper());
         } catch (Exception e) {
             throw e;
         }

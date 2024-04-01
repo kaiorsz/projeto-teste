@@ -1,37 +1,47 @@
 package com.example.projetoteste.jdbc;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.stereotype.Component;
 
 import javax.sql.DataSource;
 
-public abstract class ConexaoJDBC {
-    private static final String URL = "jdbc:postgresql://localhost:5432/bd_teste";
-    private static final String USUARIO = "postgres";
-    private static final String SENHA = "testedb";
+@Component
+public class ConexaoJDBC {
+    @Value("${projeto.bd.url}")
+    private String url;
 
-    private static final String DRIVER_CLASS_NAME = "org.postgresql.Driver"; // ou o driver do seu banco de dados
+    @Value("${projeto.bd.username}")
+    private String usuario;
+
+    @Value("${projeto.bd.password}")
+    private String senha;
+
+    @Value("${projeto.bd.driver}")
+    private String driverClassName;
 
     private static JdbcTemplate jdbcTemplate;
 
-    public static JdbcTemplate getJdbcTemplate() {
+    public synchronized JdbcTemplate getJdbcTemplate() {
         if (jdbcTemplate == null) {
             inicializarJdbcTemplate();
         }
         return jdbcTemplate;
     }
 
-    private static void inicializarJdbcTemplate() {
+    private void inicializarJdbcTemplate() {
         DataSource dataSource = criarDataSource();
         jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
-    private static DataSource criarDataSource() {
+    private DataSource criarDataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setDriverClassName(DRIVER_CLASS_NAME);
-        dataSource.setUrl(URL);
-        dataSource.setUsername(USUARIO);
-        dataSource.setPassword(SENHA);
+        dataSource.setDriverClassName(driverClassName);
+        dataSource.setUrl(url);
+        dataSource.setUsername(usuario);
+        dataSource.setPassword(senha);
         return dataSource;
     }
 }

@@ -4,11 +4,13 @@ import com.example.projetoteste.entity.Venda;
 import com.example.projetoteste.entity.VendaProduto;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
+@Component
 public class VendaProdutoDao {
 
     JdbcTemplate jdbcTemplate;
