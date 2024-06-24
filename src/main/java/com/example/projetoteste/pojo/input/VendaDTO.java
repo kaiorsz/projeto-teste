@@ -4,22 +4,22 @@ import java.util.List;
 
 public class VendaDTO {
 
-    private String cliente;
-    private List<VendaProdutoDTO> venda_produtos;
+    private Integer usuario;
+    private Integer evento;
 
-    public String getCliente() {
-        return cliente;
+    public Integer getUsuario() {
+        return usuario;
     }
 
-    public void setCliente(String cliente) {
-        this.cliente = cliente;
+    public void setUsuario(Integer usuario) {
+        this.usuario = usuario;
     }
 
-    public List<VendaProdutoDTO> getVenda_produtos() {
-        return venda_produtos;
+    public Integer getEvento() {
+        return evento;
     }
 
-    public void setVenda_produtos(List<VendaProdutoDTO> venda_produtos) {
-        this.venda_produtos = venda_produtos;
+    public void setEvento(Integer evento) {
+        this.evento = evento;
     }
 }

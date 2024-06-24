@@ -9,26 +9,38 @@ Este projeto consiste em um sistema de gerenciamento de vendas, desenvolvido em 
     - Execute as seguintes consultas SQL em seu banco de dados para criar as tabelas:
 
 ```sql
-CREATE TABLE produto (
-    id SERIAL PRIMARY KEY,
-    nome VARCHAR(255) NOT NULL CHECK (nome <> ''),
-    descricao VARCHAR(255),
-    quantidade_disponivel INTEGER NOT NULL,
-    valor_unitario NUMERIC(10,2) NOT NULL
+CREATE TABLE evento (
+                       id SERIAL PRIMARY KEY,
+                       evento VARCHAR(255) NOT NULL CHECK (evento <> ''),
+                       dataInicial DATE NOT NULL,
+                       dataFinal DATE NOT NULL,
+                       valoringresso DOUBLE PRECISION NOT NULL,
+                       quantidadedisponivel INTEGER NOT NULL
 );
-
-CREATE TABLE venda (
-    id SERIAL PRIMARY KEY,
-    cliente VARCHAR(255) NOT NULL CHECK (cliente <> ''),
-    valor_total NUMERIC(10,2) NOT NULL
+CREATE TABLE usuario (
+                       id SERIAL PRIMARY KEY,
+                       cpf VARCHAR(11),
+                       nome VARCHAR(255) NOT NULL CHECK (nome <> ''),
+                       email VARCHAR(255) NOT NULL CHECK (email <> ''),
+                       datanascimento DATE NOT NULL
 );
-
-CREATE TABLE venda_produto (
-    id SERIAL PRIMARY KEY,
-    venda INTEGER REFERENCES venda(id) NOT NULL,
-    produto INTEGER REFERENCES produto(id) NOT NULL,
-    quantidade INTEGER NOT NULL
-); 
+CREATE TABLE ingresso (
+                       id SERIAL PRIMARY KEY,
+                       evento INTEGER NOT NULL REFERENCES evento(id),
+                       usuario INTEGER NOT NULL REFERENCES usuario(id)
+);
+CREATE TABLE endereco (
+                        id SERIAL PRIMARY KEY,
+                        rua VARCHAR(255) NOT NULL CHECK (rua <> ''),
+                        numero INTEGER NOT NULL,
+                        bairro VARCHAR(255) NOT NULL CHECK (bairro <> ''),
+                        cidade VARCHAR(255) NOT NULL CHECK (cidade <> ''),
+                        estado VARCHAR(255) NOT NULL CHECK (estado <> ''),
+                        cep VARCHAR(8) NOT NULL CHECK (cep <> ''),
+                        usuario INTEGER REFERENCES usuario(id),
+                        evento INTEGER REFERENCES evento(id)
+    );  
+)
 ```
 
 2. **Configuração do Projeto:**
